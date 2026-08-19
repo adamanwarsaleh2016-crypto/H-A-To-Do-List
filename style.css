@@ -117,3 +117,31 @@ input {
   text-decoration: line-through;
   opacity: 0.6;
 }
+/* وضع الاسم والوقت في نفس السطر */
+.task-info {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* المسافة بين الاسم والوقت */
+}
+
+#task h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+/* كود التكبير والتنسيق للوقت والتاريخ */
+.task-time {
+  font-size: 1.15rem; /* تكبير خط الأرقام والوقت */
+  font-weight: bold; /* جعل الأرقام عريضة وواضحة */
+  color: #c084fc; /* لون بنفسجي نيون مبهج */
+  opacity: 0.95;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* تكبير أيقونة الساعة جنب الأرقام */
+.task-time i {
+  font-size: 1.1rem;
+}
