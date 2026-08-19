@@ -132,7 +132,7 @@ input {
 
 /* كود التكبير والتنسيق للوقت والتاريخ */
 .task-time {
-  font-size: 1.15rem; /* تكبير خط الأرقام والوقت */
+  font-size: 1rem; /* تكبير خط الأرقام والوقت */
   font-weight: bold; /* جعل الأرقام عريضة وواضحة */
   color: #c084fc; /* لون بنفسجي نيون مبهج */
   opacity: 0.95;
@@ -143,5 +143,23 @@ input {
 
 /* تكبير أيقونة الساعة جنب الأرقام */
 .task-time i {
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+input {
+  width: 80%;
+  height: 30px;
+  margin: 10px;
+  border-radius: 8px;
+  background-color: rgba(8, 5, 14, 0.8);
+  border: 1px solid #7c3aed;
+  color: #ffffff;
+  outline: none;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.3);
+  box-sizing: border-box;
+}
+
+/* لجعل أيقونة اختيار التاريخ والوقت تظهر باللون الأبيض للتناسب مع التصميم */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
 }
