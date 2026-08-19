@@ -2,8 +2,9 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function addTask() {
     var taskName = document.getElementById("input").value;
+    var dueDateValue = document.getElementById("due-date").value;
 
-    if (taskName == "") {
+    if (taskName.trim() == "") {
         alert("Please input Task name");
         return;
     }
@@ -15,6 +16,7 @@ function addTask() {
     tasks.push({
         TaskName: taskName,
         taskDate: `${currentDate} - ${currentTime}`,
+        dueDate: dueDateValue ? new Date(dueDateValue).getTime() : null, // حفظ الموعد المحدد بالمللي ثانية
         isDone: false
     });
 
@@ -22,23 +24,26 @@ function addTask() {
     readTasks();
 
     document.getElementById("input").value = "";
+    document.getElementById("due-date").value = "";
 }
 
 function readTasks() {
     var tasksContainer = document.getElementsByClassName("tasks")[0];
-
     tasksContainer.innerHTML = "";
 
     for (var index = 0; index < tasks.length; index++) {
+        var formattedDueDate = "";
+        if (tasks[index].dueDate) {
+            var d = new Date(tasks[index].dueDate);
+            formattedDueDate = ` | Due: ${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        }
 
         tasksContainer.innerHTML += `
-        
         <div id="task" class="${tasks[index].isDone ? "completed" : ""}">
-
             <div class="task-info">
                 <h2>${tasks[index].TaskName}</h2>
                 <span class="task-time">
-                    <i class="bi bi-clock"></i> ${tasks[index].taskDate || ''}
+                    <i class="bi bi-clock"></i> ${tasks[index].taskDate || ''}${formattedDueDate}
                 </span>
             </div>
 
@@ -55,9 +60,7 @@ function readTasks() {
                     <i class="bi bi-check2-circle"></i>
                 </button>
             </div>
-
         </div>
-        
         `;
     }
 }
@@ -100,4 +103,26 @@ function doneTask(index) {
     readTasks();
 }
 
+// دالة تفحص المواعيد المنتهية وحذفها تلقائياً
+function checkExpiredTasks() {
+    var now = new Date().getTime();
+    var hasChanges = false;
+
+    for (var i = tasks.length - 1; i >= 0; i--) {
+        if (tasks[i].dueDate && now >= tasks[i].dueDate) {
+            tasks.splice(i, 1);
+            hasChanges = true;
+        }
+    }
+
+    if (hasChanges) {
+        saveTasks();
+        readTasks();
+    }
+}
+
+// فحص المواعيد كل ثانيتين
+setInterval(checkExpiredTasks, 2000);
+
 readTasks();
+checkExpiredTasks();
