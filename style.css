@@ -20,7 +20,7 @@ body {
 
 .container {
   background-color: rgba(18, 10, 31, 0.85); /* خلفية سوداء بنفسجية شفافة */
-  width: 50%;
+  width: 40%;
   min-height: 50vh;
   padding: 20px;
   position: relative;
