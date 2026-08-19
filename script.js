@@ -8,8 +8,13 @@ function addTask() {
         return;
     }
 
+    var now = new Date();
+    var currentDate = now.toLocaleDateString();
+    var currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     tasks.push({
         TaskName: taskName,
+        taskDate: `${currentDate} - ${currentTime}`,
         isDone: false
     });
 
@@ -20,7 +25,6 @@ function addTask() {
 }
 
 function readTasks() {
-
     var tasksContainer = document.getElementsByClassName("tasks")[0];
 
     tasksContainer.innerHTML = "";
@@ -31,40 +35,38 @@ function readTasks() {
         
         <div id="task" class="${tasks[index].isDone ? "completed" : ""}">
 
-            <h2>
-                ${tasks[index].TaskName}
-            </h2>
+            <div class="task-info">
+                <h2>${tasks[index].TaskName}</h2>
+                <span class="task-time">
+                    <i class="bi bi-clock"></i> ${tasks[index].taskDate || ''}
+                </span>
+            </div>
 
-            <button class="btn edit" onclick="updateTask(${index})">
-                <i class="bi bi-pencil-square"></i>
-            </button>
+            <div class="action-btns">
+                <button class="btn edit" onclick="updateTask(${index})">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
 
-            <button class="btn delete" onclick="deleteTask(${index})">
-                <i class="bi bi-trash"></i>
-            </button>
+                <button class="btn delete" onclick="deleteTask(${index})">
+                    <i class="bi bi-trash"></i>
+                </button>
 
-            <button class="btn done" onclick="doneTask(${index})">
-                <i class="bi bi-check2-circle"></i>
-            </button>
+                <button class="btn done" onclick="doneTask(${index})">
+                    <i class="bi bi-check2-circle"></i>
+                </button>
+            </div>
 
         </div>
         
         `;
     }
 }
-function doneTask(index) {
 
-    tasks[index].isDone = !tasks[index].isDone;
-
-    saveTasks();
-    readTasks();
-}
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function deleteTask(index) {
-
     var confirmed = confirm(
         "Are you sure you want to delete? " +
         tasks[index].TaskName
@@ -72,14 +74,12 @@ function deleteTask(index) {
 
     if (confirmed) {
         tasks.splice(index, 1);
-
         saveTasks();
         readTasks();
     }
 }
 
 function updateTask(index) {
-
     var newName = prompt(
         "Input new task name?",
         tasks[index].TaskName
@@ -90,25 +90,14 @@ function updateTask(index) {
     }
 
     tasks[index].TaskName = newName.trim();
-
     saveTasks();
     readTasks();
 }
 
-
-// ⭐ DONE BUTTON
 function doneTask(index) {
-
-    if (tasks[index].isDone == false) {
-        tasks[index].isDone = true;
-    } else {
-        tasks[index].isDone = false;
-    }
-
+    tasks[index].isDone = !tasks[index].isDone;
     saveTasks();
     readTasks();
 }
 
-
-// تشغيل المهام المحفوظة
 readTasks();
